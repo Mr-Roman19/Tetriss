@@ -8,6 +8,7 @@
 
 ## Гейплей 
 
+https://github.com/Mr-Roman19/Tetriss/issues/1#issue-1202911869
 
 ## Выполнил 
 Корнелюк Роман БСБО-08-20
