@@ -52,7 +52,7 @@ pygame.init()
 sc = pygame.display.set_mode(RES)
 game_sc = pygame.Surface(GAME_RES)
 clock = pygame.time.Clock()
-b = pygame.mixer.Sound("sound/d3223df16cdc64e.ogg")
+b = pygame.mixer.Sound("sound/304c6495373fbed.ogg")
 d = pygame.mixer.Sound("sound/NES-Tetris-Sound-Effect_-Tetris-Clear-_256-kbps_.ogg") #линия
 grid = [pygame.Rect(x * TILE, y * TILE, TILE, TILE) for x in range(W) for y in range(H)]
 
@@ -149,7 +149,7 @@ while True:
 
                 figure, color = next_figure, next_color
                 next_figure, next_color = deepcopy(choice(figures)), get_color()
-                #b.play()
+                b.play()
                 anim_limit = 2000
 
                 break
