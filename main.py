@@ -9,6 +9,8 @@ RES = 750, 740
 FPS = 60
 
 
+
+
 def check_borders():
     if figure[i].x < 0 or figure[i].x > W - 1:
         return False
@@ -45,12 +47,13 @@ def set_level(level):
     with open('level', 'w') as f:
         f.write(str(level))
 
-
+pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init()
 sc = pygame.display.set_mode(RES)
 game_sc = pygame.Surface(GAME_RES)
 clock = pygame.time.Clock()
-
+b = pygame.mixer.Sound("sound/d3223df16cdc64e.ogg")
+d = pygame.mixer.Sound("sound/NES-Tetris-Sound-Effect_-Tetris-Clear-_256-kbps_.ogg") #линия
 grid = [pygame.Rect(x * TILE, y * TILE, TILE, TILE) for x in range(W) for y in range(H)]
 
 figures_pos = [[(-1, 0), (-2, 0), (0, 0), (1, 0)],
@@ -100,9 +103,11 @@ while True:
     sc.blit(bg, (0, 0))
     sc.blit(game_sc, (20, 20))
     game_sc.blit(game_bg, (0, 0))
+
     # delay for full lines
     for i in range(lines):
         pygame.time.wait(200)
+        d.play()
     # control
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -114,51 +119,71 @@ while True:
                 dx = 1
             elif event.key == pygame.K_DOWN:
                 anim_limit = 100
+
             elif event.key == pygame.K_UP:
                 rotate = True
     # move x
     figure_old = deepcopy(figure)
+
     for i in range(4):
         figure[i].x += dx
+
         if not check_borders():
             figure = deepcopy(figure_old)
+
             break
+
     # move y
     anim_count += anim_speed
+
     if anim_count > anim_limit:
         anim_count = 0
         figure_old = deepcopy(figure)
+
         for i in range(4):
             figure[i].y += 1
+
             if not check_borders():
                 for i in range(4):
                     field[figure_old[i].y][figure_old[i].x] = color
+
                 figure, color = next_figure, next_color
                 next_figure, next_color = deepcopy(choice(figures)), get_color()
+                #b.play()
                 anim_limit = 2000
+
                 break
-    # rotate
+
+# rotate
     center = figure[0]
     figure_old = deepcopy(figure)
+
     if rotate:
         for i in range(4):
             x = figure[i].y - center.y
             y = figure[i].x - center.x
             figure[i].x = center.x - x
             figure[i].y = center.y + y
+
             if not check_borders():
                 figure = deepcopy(figure_old)
+
                 break
+
     # check lines
     line, lines = H - 1, 0
     for row in range(H - 1, -1, -1):
         count = 0
+
         for i in range(W):
             if field[row][i]:
                 count += 1
+
             field[line][i] = field[row][i]
+
         if count < W:
             line -= 1
+
         else:
 
             # update level
@@ -175,8 +200,10 @@ while True:
 
             anim_speed += 3
             lines += 1
+
     # compute score
     score += scores[lines]
+
 
     # draw grid
     [pygame.draw.rect(game_sc, (40, 40, 40), i_rect, 1) for i_rect in grid]
