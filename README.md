@@ -9,7 +9,7 @@
 ## Геймплей 
 
 
-https://user-images.githubusercontent.com/101460131/163557093-30846a5b-3a37-4470-a1f5-2a5079435e80.mp4
+
  
 
 ## Выполнил 
